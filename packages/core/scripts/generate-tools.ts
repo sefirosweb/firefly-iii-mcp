@@ -1,11 +1,14 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import { OpenAPIV3 } from 'openapi-types';
 import { McpToolDefinition } from '../src/types';
 import { getToolsFromOpenApiDocument } from './generator/api';
 
-/** Api Document URL */
-const API_DOCUMENT_URL = 'https://api-docs.firefly-iii.org/firefly-iii-6.2.13-v1.yaml';
+// Read the OpenAPI spec from a vendored local copy under ./openapi/. Avoids a
+// remote fetch at build time (supply-chain hardening). To upgrade the spec,
+// download a new version manually and update this filename.
+const API_DOCUMENT_PATH = path.resolve(process.cwd(), 'openapi/firefly-iii-6.2.13-v1.yaml');
 const OUTPUT_FILE = './src/tools.ts';
 
 /** Enabled actions to generate tools for */
@@ -34,8 +37,11 @@ const custonFilterFn = (tool: McpToolDefinition) => {
 */
 
 (async () => {
-  // Load the OpenAPI document
-  const document = (await SwaggerParser.dereference(API_DOCUMENT_URL)) as OpenAPIV3.Document
+  if (!fs.existsSync(API_DOCUMENT_PATH)) {
+    throw new Error(`OpenAPI spec not found at ${API_DOCUMENT_PATH}. Vendor the file under packages/core/openapi/ before running toolgen.`);
+  }
+  // Load the OpenAPI document from disk (no network access at build time)
+  const document = (await SwaggerParser.dereference(API_DOCUMENT_PATH)) as OpenAPIV3.Document
 
   const tools: McpToolDefinition[] = await getToolsFromOpenApiDocument(document);
 
