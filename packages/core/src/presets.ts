@@ -111,6 +111,24 @@ export const TOOL_PRESETS: Record<string, string[]> = {
     "webhooks",
     "transactions",
   ],
+
+  // Personal daily-use preset: transactions CRUD + search, accounts and
+  // balances, taxonomy (categories, tags), budgets, existing rules
+  // execution, and a basic dashboard via "summary". The verbose
+  // "insight" tag is intentionally excluded; switch to FIREFLY_III_PRESET=full
+  // for ad-hoc analytics queries.
+  "personal": [
+    "accounts",
+    "transactions",
+    "search",
+    "categories",
+    "tags",
+    "budgets",
+    "available_budgets",
+    "rules",
+    "rule_groups",
+    "summary",
+  ],
 };
 
 /**

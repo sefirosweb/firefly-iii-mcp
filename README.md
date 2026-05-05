@@ -246,6 +246,7 @@ You can filter which tools are exposed to the MCP client to reduce token usage a
 - `reporting`: Reporting and analysis tools
 - `admin`: Administration tools
 - `automation`: Automation-related tools
+- `personal` *(fork-only)*: Daily-use bundle for personal finance — transactions CRUD + search, accounts, categories, tags, budgets, existing rules execution, and basic dashboard via `summary`. ~67 tools. The verbose `insight` tag is excluded; switch to `full` for ad-hoc analytics.
 
 ## Development Guide
 
